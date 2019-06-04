@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".NoteNew">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,9 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_main" />
+    <include layout="@layout/content_note_new" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -30,20 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notesListR"
-        android:layout_marginTop="55dp">
-
-    </android.support.v7.widget.RecyclerView>
-    <!--<ListView
-        android:id="@+id/notesList"
-        android:layout_width="match_parent"
-        android:layout_height="618dp"
-        app:layout_anchorGravity="top|center">
-
-    </ListView>-->
 </android.support.design.widget.CoordinatorLayout>

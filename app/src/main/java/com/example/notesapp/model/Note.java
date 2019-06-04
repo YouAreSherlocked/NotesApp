@@ -9,8 +9,14 @@ public class Note {
     private Boolean isFavourite = false;
     private Date createdAt;
 
-    public Note() {
+    public Note(String title, String content, Boolean isFavourite) {
+        this.title = title;
+        this.content = content;
+        this.isFavourite = isFavourite;
+    }
 
+    public String toString() {
+        return title;
     }
 
 
