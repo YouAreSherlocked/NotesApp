@@ -24,11 +24,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String N_COL_4 = "CREATED_DATE";
     public static final String N_COL_5 = "FAV";
 
+    SQLiteDatabase db;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -40,6 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS USER_TABLE_NAME");
+        db.execSQL("DROP TABLE IF EXISTS UN_TABLE_NAME");
+        db.execSQL("DROP TABLE IF EXISTS NOTES_TABLE_NAME");
         onCreate(db);
     }
 }
