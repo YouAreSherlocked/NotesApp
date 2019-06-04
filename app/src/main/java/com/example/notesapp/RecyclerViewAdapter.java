@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -42,12 +41,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mTexts.get(position));
                 Intent intent = new Intent(v.getContext(), NoteDetail.class);
-                //intent.putExtra("TITLE", "title");
-                //intent.putExtra("TEXT", "text");
+                intent.putExtra("TITLE", mTitles.get(position));
+                intent.putExtra("TEXT", mTexts.get(position));
                 v.getContext().startActivity(intent);
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
         notesDb = new DatabaseHelper(this);
         notesDb.close();
 
-        editUsername = (EditText)findViewById(R.id.editText);
-        editPassword = (EditText)findViewById(R.id.editText3);
-        btnAddData = (Button)findViewById(R.id.button_add);
-        addData();
+        //editUsername = (EditText)findViewById(R.id.editText);
+        //editPassword = (EditText)findViewById(R.id.editText3);
+        //btnAddData = (Button)findViewById(R.id.button_add);
+        //addData();
     }
 
     private void initNotes() {
@@ -63,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
         mTexts.add("Text 111");
         mTitles.add("Title 222");
         mTexts.add("Text 222");
-        mTitles.add("Title 222");
-        mTexts.add("Text 222");
-        mTitles.add("Title 222");
-        mTexts.add("Text 222");
-        mTitles.add("Title 222");
-        mTexts.add("Text 222");
-        mTitles.add("Title 222");
-        mTexts.add("Text 222");
-        mTitles.add("Title 222");
-        mTexts.add("Text 222");
+        mTitles.add("Title 333");
+        mTexts.add("Text 333");
+        mTitles.add("Title 444");
+        mTexts.add("Text 444");
+        mTitles.add("Title 555");
+        mTexts.add("Text 555");
+        mTitles.add("Title 777");
+        mTexts.add("Text 777");
+        mTitles.add("Title 888");
+        mTexts.add("Text 888");
 
         mNotes.add(new Note("Note 1", "Das ist die erste Notiz. Juhuu!", true));
         initRecyclerView();

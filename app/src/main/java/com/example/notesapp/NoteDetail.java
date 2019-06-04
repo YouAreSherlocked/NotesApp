@@ -7,18 +7,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 public class NoteDetail extends AppCompatActivity {
-    Intent intent = getIntent();
-    //String title = intent.getStringExtra("TITLE");
-    //String text = intent.getStringExtra("TEXT");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("TITLE");
+        String text = intent.getStringExtra("TEXT");
+
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Detail");
+        setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -29,6 +33,9 @@ public class NoteDetail extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        TextView content = findViewById(R.id.noteDetailText);
+        content.setText(text);
     }
 
 }

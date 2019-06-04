@@ -30,4 +30,13 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="teeeeext"
+        android:layout_marginTop="55dp"
+        android:paddingTop="30dp"
+        android:paddingLeft="30dp"
+        android:id="@+id/noteDetailText"/>
+
 </android.support.design.widget.CoordinatorLayout>
