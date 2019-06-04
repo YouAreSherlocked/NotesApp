@@ -27,10 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper notesDb;
 
-    private ArrayList<String> mTitles = new ArrayList<>();
-    private ArrayList<String> mTexts = new ArrayList<>();
-    private ArrayList<Note> mNotes = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
