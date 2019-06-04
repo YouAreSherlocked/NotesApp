@@ -1,5 +1,6 @@
 package com.example.notesapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,7 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        db = this.getWritableDatabase();
     }
 
 
@@ -45,5 +45,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS UN_TABLE_NAME");
         db.execSQL("DROP TABLE IF EXISTS NOTES_TABLE_NAME");
         onCreate(db);
+    }
+
+    public boolean insertData(String username, String password) {
+        db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(U_COL_2, username);
+        contentValues.put(U_COL_3, password);
+        long result = db.insert(USER_TABLE_NAME, null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

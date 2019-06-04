@@ -9,10 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper notesDb;
+    EditText editUsername, editPassword;
+    Button btnAddData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +34,26 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
         notesDb = new DatabaseHelper(this);
         notesDb.close();
+
+        editUsername = (EditText)findViewById(R.id.editText);
+        editPassword = (EditText)findViewById(R.id.editText3);
+        btnAddData = (Button)findViewById(R.id.button_add);
+        addData();
     }
+
+    public void addData() {
+        btnAddData.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    notesDb.insertData(editUsername.getText().toString(), editPassword.getText().toString());
+                    }
+                }
+        );
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
