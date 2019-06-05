@@ -1,5 +1,6 @@
 package com.example.notesapp;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -57,7 +58,16 @@ public class NoteDetail extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_detail_favourite:
                 Log.v(TAG, "Star clicked");
-                //MenuItem selected =  findViewById(R.id.action_detail_favourite);
+                if (item.isChecked()) {
+                    item.setIcon(R.drawable.ic_star_border_white_24dp);
+                    item.setTitle("Add as Favourite");
+                    item.setChecked(false);
+                }
+                else {
+                    item.setIcon(R.drawable.ic_star_white_24dp);
+                    item.setTitle("Remove from Favourites");
+                    item.setChecked(true);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

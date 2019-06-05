@@ -10,6 +10,7 @@ import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.example.notesapp.model.Note;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private ArrayList<String> mTitles = new ArrayList<>();
     private ArrayList<String> mTexts = new ArrayList<>();
@@ -157,22 +159,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public boolean onOptionsItemSelected(MenuItem item ) {
+        switch (item.getItemId()) {
+            case R.id.action_home_favourites:
+                Log.v(TAG, "Star clicked");
+                if (item.isChecked()) {
+                    item.setIcon(R.drawable.ic_star_border_white_24dp);
+                    item.setChecked(false);
+                    item.setTitle("Show Favourites");
+                }
+                else {
+                    item.setIcon(R.drawable.ic_star_white_24dp);
+                    item.setChecked(true);
+                    item.setTitle("Show all");
+                }
+                return true;
+            case R.id.action_home_search:
+                Log.v(TAG, "Search clicked");
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    item.setTitle("Close Search");
+                }
+                else {
+                    item.setChecked(true);
+                    item.setTitle("Open Search");
+                }
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
