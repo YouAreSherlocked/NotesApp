@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Date;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "notesapp.db";
@@ -48,12 +50,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String username, String password) {
+    public boolean registerUser(String username, String password) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(U_COL_2, username);
         contentValues.put(U_COL_3, password);
         long result = db.insert(USER_TABLE_NAME, null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean insertNote(String title, String content, Date created_date, Boolean fav) {
+        db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(N_COL_2, title);
+        contentValues.put(N_COL_3, content);
+        contentValues.put(N_COL_4, created_date.toString());
+        contentValues.put(N_COL_5, fav);
+        long result = db.insert(NOTES_TABLE_NAME, null, contentValues);
         if (result == -1) {
             return false;
         } else {

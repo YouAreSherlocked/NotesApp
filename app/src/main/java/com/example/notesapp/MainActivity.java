@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Note> mNotes = new ArrayList<>();
 
     DatabaseHelper notesDb;
-    EditText editUsername, editPassword;
-    Button btnAddData;
     Button btnViewData;
 
     @Override
@@ -60,15 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 openLoginPage();
             }
         });
+
         notesDb = new DatabaseHelper(this);
         notesDb.close();
 
-        editUsername = (EditText)findViewById(R.id.editText_username);
-        editPassword = (EditText)findViewById(R.id.editText_password);
-        btnAddData = (Button)findViewById(R.id.add_button);
-        btnViewData = (Button)findViewById(R.id.get_button);
-        addData();
-        viewAllData();
+        //btnViewData = (Button)findViewById(R.id.get_button);
+        //viewAllData();
     }
 
     private void initNotes() {
@@ -113,17 +108,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<Note> noteAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
         noteAdapter.addAll(NotesDao.getAll());
         notes.setAdapter(noteAdapter);
-    }
-
-    public void addData() {
-        btnAddData.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    notesDb.insertData(editUsername.getText().toString(), editPassword.getText().toString());
-                    }
-                }
-        );
     }
 
     public void viewAllData() {
