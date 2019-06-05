@@ -1,10 +1,12 @@
 package com.example.notesapp;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.notesapp.dal.NotesDao;
 import com.example.notesapp.model.Note;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper notesDb;
     EditText editUsername, editPassword;
     Button btnAddData;
+    Button btnViewData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
         notesDb = new DatabaseHelper(this);
         notesDb.close();
 
-        editUsername = (EditText)findViewById(R.id.editText);
-        editPassword = (EditText)findViewById(R.id.editText3);
-        btnAddData = (Button)findViewById(R.id.button_add);
+        editUsername = (EditText)findViewById(R.id.editText_username);
+        editPassword = (EditText)findViewById(R.id.editText_password);
+        btnAddData = (Button)findViewById(R.id.add_button);
+        btnViewData = (Button)findViewById(R.id.get_button);
         addData();
+        viewAllData();
     }
 
     private void initNotes() {
@@ -108,6 +112,35 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    public void viewAllData() {
+        btnViewData.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Cursor result = notesDb.getAllData();
+                        if (result.getCount() == 0) {
+                            showMessage("ERROR", "No Data Found");
+                            return;
+                        }
+                            StringBuffer buffer = new StringBuffer();
+                            while (result.moveToNext()) {
+                                buffer.append("ID :"+ result.getString(0)+"\n");
+                                buffer.append("USERNAME :"+ result.getString(1)+"\n");
+                                buffer.append("PASSWORD :"+ result.getString(2)+"\n\n");
+                            }
+                            showMessage("Data", buffer.toString());
+                    }
+                }
+        );
+    }
+
+    public void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
