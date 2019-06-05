@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.notesapp.model.Note;
 
@@ -102,24 +101,6 @@ public class MainActivity extends AppCompatActivity {
     public void openLoginPage() {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
-    }
-
-    public void loadNotesToHome() {
-        ListView notes = findViewById(R.id.notesList);
-        ArrayAdapter<Note> noteAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
-        noteAdapter.addAll(NotesDao.getAll());
-        notes.setAdapter(noteAdapter);
-    }
-
-    public void addData() {
-        btnAddData.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    notesDb.insertData(editUsername.getText().toString(), editPassword.getText().toString());
-                    }
-                }
-        );
     }
 
     public void viewAllData() {
