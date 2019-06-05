@@ -15,6 +15,22 @@ public class Note {
         this.isFavourite = isFavourite;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Boolean getFavourite() {
+        return isFavourite;
+    }
+
+    public Date getDate() {
+        return createdAt;
+    }
+
     public String toString() {
         return title;
     }
