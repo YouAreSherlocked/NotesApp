@@ -1,18 +1,16 @@
 package com.example.notesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 public class NoteNew extends AppCompatActivity {
@@ -20,7 +18,6 @@ public class NoteNew extends AppCompatActivity {
     DatabaseHelper notesDb;
     EditText noteTitle, noteContent;
     Button btnAddData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +67,13 @@ public class NoteNew extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), true);
+                        openMainActivityPage();
                     }
                 }
         );
     }
-
+    public void openMainActivityPage() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }

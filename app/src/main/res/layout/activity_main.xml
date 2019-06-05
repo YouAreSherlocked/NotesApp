@@ -40,13 +40,7 @@
         android:layout_marginTop="55dp">
 
     </android.support.v7.widget.RecyclerView>
-    <!--<ListView
-        android:id="@+id/notesList"
-        android:layout_width="match_parent"
-        android:layout_height="618dp"
-        app:layout_anchorGravity="top|center">
 
-    </ListView>-->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
