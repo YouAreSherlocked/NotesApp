@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.notesapp.dal.NotesDao;
 import com.example.notesapp.model.Note;
