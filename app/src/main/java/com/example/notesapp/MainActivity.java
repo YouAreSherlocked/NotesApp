@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 openNewNotePage();
             }
         });
+        Button loginBtn = findViewById(R.id.login_button);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLoginPage();
+            }
+        });
         notesDb = new DatabaseHelper(this);
         notesDb.close();
 
@@ -86,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openNewNotePage() {
         Intent intent = new Intent(this, NoteNew.class);
+        startActivity(intent);
+    }
+
+    public void openLoginPage() {
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 
