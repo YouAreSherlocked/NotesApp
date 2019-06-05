@@ -24,17 +24,9 @@
         android:id="@+id/include2"
         layout="@layout/content_note_detail" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="634dp"
         android:paddingTop="55dp">
 
         <EditText
@@ -56,8 +48,8 @@
 
         <EditText
             android:id="@+id/noteDetailText"
-            android:layout_width="412dp"
-            android:layout_height="600dp"
+            android:layout_width="408dp"
+            android:layout_height="509dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:gravity="start|top"
@@ -70,6 +62,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/noteDetailTitle" />
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/update_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Safe"
+        app:layout_anchor="@+id/include2"
+        app:layout_anchorGravity="bottom|center" />
 
 
 </android.support.design.widget.CoordinatorLayout>

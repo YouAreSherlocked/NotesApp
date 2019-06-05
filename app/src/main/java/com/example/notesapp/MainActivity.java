@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
 
     DatabaseHelper notesDb;
-    Button btnViewData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("NotesApp");
 
-        initNotes();
         mAdapter = new RecyclerViewAdapter(this, mNotes);
         RecyclerView rView = findViewById(R.id.notesListR);
         rView.setAdapter(mAdapter);
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         notesDb = new DatabaseHelper(this);
+        loadNotes();
         notesDb.close();
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
@@ -77,20 +76,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         touchHelper.attachToRecyclerView(rView);
-        //btnViewData = (Button)findViewById(R.id.get_button);
-        //viewAllData();
     }
 
-    private void initNotes() {
-        mNotes.add(new Note("Note 1", "Das ist die erste Notiz. Juhuu!", true));
-        mNotes.add(new Note("Note 2", "Das ist die zweite Notiz. Juhuu!", false));
-        mNotes.add(new Note("Note 3", "Das ist die dritte Notiz. Juhuu!", false));
-        mNotes.add(new Note("Note 4", "Das ist die erste Notiz. Juhuu!", false));
-        mNotes.add(new Note("Note 5", "Das ist die erste Notiz. Juhuu!", false));
-    }
+    private void loadNotes() {
 
-    private void initRecyclerView() {
-
+        Cursor result = notesDb.getAllData();
+        if (result.getCount() == 0) {
+            showMessage("ERROR", "No Data Found");
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        while (result.moveToNext()) {
+            mNotes.add(new Note(result.getString(1), result.getString(2), false));
+        }
     }
 
     public void openNewNotePage() {
@@ -103,27 +101,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void viewAllData() {
-        btnViewData.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Cursor result = notesDb.getAllData();
-                        if (result.getCount() == 0) {
-                            showMessage("ERROR", "No Data Found");
-                            return;
-                        }
-                            StringBuffer buffer = new StringBuffer();
-                            while (result.moveToNext()) {
-                                buffer.append("ID :"+ result.getString(0)+"\n");
-                                buffer.append("USERNAME :"+ result.getString(1)+"\n");
-                                buffer.append("PASSWORD :"+ result.getString(2)+"\n\n");
-                            }
-                            showMessage("Data", buffer.toString());
-                    }
-                }
-        );
-    }
 
     public void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

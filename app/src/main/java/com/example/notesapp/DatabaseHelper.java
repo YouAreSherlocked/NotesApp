@@ -80,7 +80,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllData() {
         db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("select * from "+USER_TABLE_NAME, null);
+        Cursor result = db.rawQuery("select * from "+NOTES_TABLE_NAME, null);
         return result;
     }
+
+    public Boolean updateNote(String id, String title, String content) {
+        db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(N_COL_1, id);
+        contentValues.put(N_COL_2, title);
+        contentValues.put(N_COL_3, content);
+        db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id });
+        return true;
+    }
+
 }

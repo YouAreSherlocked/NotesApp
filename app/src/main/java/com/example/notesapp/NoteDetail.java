@@ -16,11 +16,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NoteDetail extends AppCompatActivity {
     private static final String TAG = "NoteDetail";
+
+    DatabaseHelper notesDb;
+    EditText noteTitle, noteContent;
+    Button btnUpdateNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +64,28 @@ public class NoteDetail extends AppCompatActivity {
 
             }
         });
+
+        notesDb = new DatabaseHelper(this);
+
+        noteTitle = (EditText)findViewById(R.id.noteDetailTitle);
+        noteContent = (EditText)findViewById(R.id.noteDetailText);
+        btnUpdateNote = (Button)findViewById(R.id.update_button);
+        updateNoteData();
     }
 
 
+    public void updateNoteData() {
+        btnUpdateNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isUpdated = notesDb.updateNote("1", noteTitle.getText().toString(), noteContent.getText().toString());
+                if (isUpdated == true) {
+                    Toast.makeText(NoteDetail.this, "Note successfully safed",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(NoteDetail.this, "ERROR: Note has not been safed",Toast.LENGTH_LONG).show();                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
