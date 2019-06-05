@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,27 +27,40 @@ public class NoteDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra("TITLE");
-        String text = intent.getStringExtra("TEXT");
+        String titleIn = intent.getStringExtra("TITLE");
+        String textIn = intent.getStringExtra("TEXT");
 
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(title);
+        setTitle(titleIn);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        EditText content2 = findViewById(R.id.noteDetailText);
+        content2.setText(textIn);
+
+        EditText title = findViewById(R.id.noteDetailTitle);
+        title.setText(titleIn);
+        title.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setTitle(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
-
-        EditText content2 = findViewById(R.id.noteDetailTextarea);
-        content2.setText(text);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {

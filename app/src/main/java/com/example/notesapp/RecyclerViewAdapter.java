@@ -10,18 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.notesapp.model.Note;
+
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mTitles = new ArrayList<>();
-    private ArrayList<String> mTexts = new ArrayList<>();
+    private ArrayList<Note> mNotes = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mTitles, ArrayList<String> mTexts) {
-        this.mTitles = mTitles;
-        this.mTexts = mTexts;
+    public RecyclerViewAdapter(Context mContext, ArrayList<Note> mNotes) {
+        this.mNotes = mNotes;
         this.mContext = mContext;
     }
 
@@ -34,25 +34,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.text.setText(mTexts.get(position));
-        holder.title.setText(mTitles.get(position));
+        holder.text.setText(mNotes.get(position).getContent());
+        holder.title.setText(mNotes.get(position).getTitle());
         holder.notesListR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + mTexts.get(position));
                 Intent intent = new Intent(v.getContext(), NoteDetail.class);
-                intent.putExtra("TITLE", mTitles.get(position));
-                intent.putExtra("TEXT", mTexts.get(position));
+                intent.putExtra("TITLE", mNotes.get(position).getTitle());
+                intent.putExtra("TEXT", mNotes.get(position).getContent());
                 v.getContext().startActivity(intent);
             }
         });
     }
 
-
-
     @Override
     public int getItemCount() {
-        return mTexts.size();
+        return mNotes.size();
     }
 
 
