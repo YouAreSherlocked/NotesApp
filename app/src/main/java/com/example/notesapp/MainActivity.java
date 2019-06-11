@@ -16,10 +16,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.notesapp.model.Note;
 
 import java.util.ArrayList;
+
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -29,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper notesDb;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,27 +64,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
         notesDb = new DatabaseHelper(this);
+
         loadNotes();
         notesDb.close();
 
-        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
+            ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int i) {
-                int position = target.getAdapterPosition();
-                mNotes.remove(position);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        touchHelper.attachToRecyclerView(rView);
-    }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder target, int i) {
+                    int position = target.getAdapterPosition();
+                    DeleteData(position);
+                    mNotes.remove(position);
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+
+            touchHelper.attachToRecyclerView(rView);
+        }
+
+        private void DeleteData(int position) {
+            Integer deletedRows = notesDb.deleteNoteById(parseInt(mNotes.get(position).getId()));
+            if (deletedRows > 0)
+                Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(MainActivity.this, "Data Not Deleted", Toast.LENGTH_LONG).show();
+        }
 
     private void loadNotes() {
-
         Cursor result = notesDb.getAllData();
         if (result.getCount() == 0) {
             showMessage("ERROR", "No Data Found");
