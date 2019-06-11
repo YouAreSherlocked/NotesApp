@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="30dp"
-    android:paddingTop="30dp"
     android:background="#eee"
     android:layout_marginBottom="5dp"
     android:id="@+id/notesList">
@@ -14,7 +13,7 @@
         android:id="@+id/noteTitle"
         android:layout_width="336dp"
         android:layout_height="31dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="36dp"
         android:text="Note Title"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,12 +40,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
+        android:id="@+id/noteStar"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/ic_star_border_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/noteStar"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
