@@ -64,13 +64,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertNote(String title, String content, Date created_date, Boolean fav) {
+    public boolean insertNote(String title, String content, Date created_date, boolean fav) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(N_COL_2, title);
         contentValues.put(N_COL_3, content);
         contentValues.put(N_COL_4, created_date.toString());
-        contentValues.put(N_COL_5, fav);
+        contentValues.put(N_COL_5, fav ? 1 : 0);
         long result = db.insert(NOTES_TABLE_NAME, null, contentValues);
         if (result == -1) {
             return false;
@@ -85,12 +85,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public Boolean updateNote(Integer id, String title, String content) {
+    public Boolean updateNote(Integer id, String title, String content, boolean fav) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(N_COL_1, id);
         contentValues.put(N_COL_2, title);
         contentValues.put(N_COL_3, content);
+        contentValues.put(N_COL_5, fav ? 1 : 0);
         db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id.toString() });
         return true;
     }
@@ -113,4 +114,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return password;
         }
     }
+    public Cursor getAllFavourites() {
+        db = this.getWritableDatabase();
+        return db.rawQuery("select * from " + NOTES_TABLE_NAME + " where " + N_COL_5 + " = ?" , new String[] { "1" });
+    }
+
 }

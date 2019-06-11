@@ -4,11 +4,13 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +32,8 @@ public class NoteDetail extends AppCompatActivity {
     EditText noteTitle, noteContent;
     Button btnUpdateNote;
     private static String id;
+    private static boolean isFav;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class NoteDetail extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("ID");
+        isFav = getIntent().getExtras().getBoolean("FAV");
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
 
@@ -82,7 +87,7 @@ public class NoteDetail extends AppCompatActivity {
         btnUpdateNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString());
+                boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString(), menu.findItem(R.id.action_detail_favourite).isChecked());
                 if (isUpdated == true) {
                     Toast.makeText(NoteDetail.this, "Note successfully safed",Toast.LENGTH_LONG).show();
                 } else {
@@ -93,7 +98,11 @@ public class NoteDetail extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        MenuItem star = menu.findItem(R.id.action_detail_favourite);
+        star.setIcon(!isFav ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp);
+        star.setChecked(!isFav ? true : false);
         return true;
     }
 
