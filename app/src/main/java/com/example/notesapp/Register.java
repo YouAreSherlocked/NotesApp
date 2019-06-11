@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Register extends AppCompatActivity {
 
     DatabaseHelper notesDb;
@@ -40,12 +43,32 @@ public class Register extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public static String md5(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public void addUser() {
         btnAddData.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        notesDb.registerUser(editUsername.getText().toString(), editPassword.getText().toString());
+                        notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
                     }
                 }
         );
