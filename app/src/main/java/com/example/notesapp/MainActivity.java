@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
         StringBuffer buffer = new StringBuffer();
         while (result.moveToNext()) {
-            mNotes.add(new Note(result.getString(1), result.getString(2), false));
+            mNotes.add(new Note(result.getString(0),result.getString(1), result.getString(2), false));
         }
     }
 

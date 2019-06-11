@@ -84,13 +84,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public Boolean updateNote(String id, String title, String content) {
+    public Boolean updateNote(Integer id, String title, String content) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(N_COL_1, id);
         contentValues.put(N_COL_2, title);
         contentValues.put(N_COL_3, content);
-        db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id });
+        db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id.toString() });
         return true;
     }
 

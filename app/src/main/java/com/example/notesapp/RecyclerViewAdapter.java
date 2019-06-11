@@ -33,12 +33,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.id.setText(mNotes.get(position).getId());
         holder.text.setText(mNotes.get(position).getContent());
         holder.title.setText(mNotes.get(position).getTitle());
         holder.notesListR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), NoteDetail.class);
+                intent.putExtra("ID", mNotes.get(position).getId());
                 intent.putExtra("TITLE", mNotes.get(position).getTitle());
                 intent.putExtra("TEXT", mNotes.get(position).getContent());
                 v.getContext().startActivity(intent);
@@ -54,6 +56,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView id;
         TextView title;
         TextView text;
         ConstraintLayout notesListR;
@@ -61,6 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemView) {
             super(itemView);
 
+            id = itemView.findViewById(R.id.noteId);
             title = itemView.findViewById(R.id.noteTitle);
             text = itemView.findViewById(R.id.noteText);
             notesListR = itemView.findViewById(R.id.notesList);

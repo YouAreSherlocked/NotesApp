@@ -3,13 +3,14 @@ package com.example.notesapp.model;
 import java.util.Date;
 
 public class Note {
-    private int id;
+    private String id;
     private String title;
     private String content;
     private Boolean isFavourite = false;
     private Date createdAt;
 
-    public Note(String title, String content, Boolean isFavourite) {
+    public Note(String id, String title, String content, Boolean isFavourite) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.isFavourite = isFavourite;
@@ -17,6 +18,10 @@ public class Note {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getContent() {

@@ -66,12 +66,13 @@ public class NoteNew extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), true);
-                        openMainActivityPage();
+                       notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), true);
+                       openMainActivityPage();
                     }
                 }
         );
     }
+
     public void openMainActivityPage() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

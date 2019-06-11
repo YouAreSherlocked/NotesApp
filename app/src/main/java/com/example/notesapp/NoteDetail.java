@@ -21,18 +21,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static java.lang.Integer.parseInt;
+
 public class NoteDetail extends AppCompatActivity {
     private static final String TAG = "NoteDetail";
 
     DatabaseHelper notesDb;
     EditText noteTitle, noteContent;
     Button btnUpdateNote;
+    private static String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
+        id = intent.getStringExtra("ID");
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
 
@@ -78,7 +82,7 @@ public class NoteDetail extends AppCompatActivity {
         btnUpdateNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isUpdated = notesDb.updateNote("1", noteTitle.getText().toString(), noteContent.getText().toString());
+                boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString());
                 if (isUpdated == true) {
                     Toast.makeText(NoteDetail.this, "Note successfully safed",Toast.LENGTH_LONG).show();
                 } else {
