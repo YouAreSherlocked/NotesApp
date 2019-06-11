@@ -33,6 +33,7 @@ public class NoteDetail extends AppCompatActivity {
     MenuItem noteFav;
     Button btnUpdateNote;
     private static String id;
+    private static boolean isFav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class NoteDetail extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("ID");
+        isFav = getIntent().getExtras().getBoolean("FAV");
+        Log.v("RRR", Boolean.toString(isFav));
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
 
@@ -98,6 +101,8 @@ public class NoteDetail extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        MenuItem star = menu.findItem(R.id.action_detail_favourite);
+        star.setIcon(!isFav ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp);
         return true;
     }
 

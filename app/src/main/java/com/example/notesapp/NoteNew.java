@@ -18,6 +18,7 @@ import java.sql.Date;
 
 public class NoteNew extends AppCompatActivity {
 
+    boolean isFav;
     DatabaseHelper notesDb;
     EditText noteTitle, noteContent;
     Button btnAddData;
@@ -72,11 +73,13 @@ public class NoteNew extends AppCompatActivity {
                     item.setIcon(R.drawable.ic_star_border_white_24dp);
                     item.setTitle("Add as Favourite");
                     item.setChecked(false);
+                    isFav = false;
                 }
                 else {
                     item.setIcon(R.drawable.ic_star_white_24dp);
                     item.setTitle("Remove from Favourites");
                     item.setChecked(true);
+                    isFav = true;
                 }
                 return true;
         }
@@ -94,7 +97,7 @@ public class NoteNew extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), true);
+                       notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), isFav);
                        openMainActivityPage();
                     }
                 }

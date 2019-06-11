@@ -6,7 +6,7 @@ public class Note {
     private String id;
     private String title;
     private String content;
-    private Boolean isFavourite = false;
+    private boolean isFavourite;
     private Date createdAt;
 
     public Note(String id, String title, String content, Boolean isFavourite) {

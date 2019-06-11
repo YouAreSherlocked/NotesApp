@@ -38,7 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.id.setText(mNotes.get(position).getId());
         holder.text.setText(mNotes.get(position).getContent());
         holder.title.setText(mNotes.get(position).getTitle());
-        holder.star.setImageDrawable(mContext.getDrawable(mNotes.get(position).getFavourite() ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp));
+        holder.star.setImageDrawable(mContext.getDrawable(!mNotes.get(position).getFavourite() ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp));
         holder.notesListR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("ID", mNotes.get(position).getId());
                 intent.putExtra("TITLE", mNotes.get(position).getTitle());
                 intent.putExtra("TEXT", mNotes.get(position).getContent());
+                intent.putExtra("FAV", mNotes.get(position).getFavourite());
                 v.getContext().startActivity(intent);
             }
         });
