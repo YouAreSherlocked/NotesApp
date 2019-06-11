@@ -41,11 +41,4 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="20dp"
-        android:id="@+id/login_button"/>
 </android.support.design.widget.CoordinatorLayout>

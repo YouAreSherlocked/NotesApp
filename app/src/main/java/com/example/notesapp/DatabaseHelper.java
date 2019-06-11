@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.sql.Date;
 
@@ -97,5 +98,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Integer deleteNoteById(Integer id) {
         db = this.getWritableDatabase();
         return db.delete(NOTES_TABLE_NAME, "ID = ?", new String[] { id.toString() });
+    }
+
+    public String getUserPassword(String username) {
+        db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(USER_TABLE_NAME, new String[] { U_COL_3 }, "USERNAME = ?", new String[] { username }, null, null, null, null);
+
+        if (cursor.getCount() == 0) {
+            return "";
+        } else {
+            cursor.moveToFirst();
+            String password = cursor.getString(0);
+            return password;
+        }
     }
 }

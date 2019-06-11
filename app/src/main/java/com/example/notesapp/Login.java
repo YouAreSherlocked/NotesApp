@@ -4,12 +4,22 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static com.example.notesapp.Register.md5;
+import static com.example.notesapp.DatabaseHelper.*;
+
 public class Login extends AppCompatActivity {
+
+    DatabaseHelper notesDb;
+    EditText editUsername, editPassword;
+    Button btnLoginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,29 +33,40 @@ public class Login extends AppCompatActivity {
                 openRegisterPage();
             }
         });
+
+        notesDb = new DatabaseHelper(this);
+        notesDb.close();
+
+        editUsername = (EditText)findViewById(R.id.login_username);
+        editPassword = (EditText)findViewById(R.id.login_password);
+
+        btnLoginUser = (Button)findViewById(R.id.button);
+        btnLoginUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser(editUsername.getText().toString());
+            }
+        });
     }
     public void openRegisterPage() {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
 
-    public static String md5(String s) {
-        try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest
-                    .getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+    public void openNotesPage() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-            return hexString.toString();
+    public void loginUser(String editUsername) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        String hashedPassword = md5(editPassword.getText().toString());
+        String password = db.getUserPassword(editUsername);
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        if (hashedPassword.equals(password)) {
+            openNotesPage();
+        } else {
+            Toast.makeText(Login.this, "Password is incorrect",Toast.LENGTH_LONG).show();
         }
-        return "";
     }
 }
