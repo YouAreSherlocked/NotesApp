@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,8 +39,14 @@ public class Register extends AppCompatActivity {
         btnAddData = (Button)findViewById(R.id.register_submit_button);
         addUser();
     }
+
     public void openLoginPage() {
         Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
+
+    public void openMainPage() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -68,7 +75,13 @@ public class Register extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
+                        if (editUsername.getText().toString() == "" || editPassword.getText().toString() == "") {
+                            Toast.makeText(Register.this, "Please fill out all fields", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
+                            openMainPage();
+                        }
                     }
                 }
         );

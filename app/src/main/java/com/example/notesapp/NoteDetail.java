@@ -89,9 +89,12 @@ public class NoteDetail extends AppCompatActivity {
             public void onClick(View v) {
                 boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString(), menu.findItem(R.id.action_detail_favourite).isChecked());
                 if (isUpdated == true) {
-                    Toast.makeText(NoteDetail.this, "Note successfully safed",Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(NoteDetail.this, "ERROR: Note has not been safed",Toast.LENGTH_LONG).show();                }
+                    Toast.makeText(NoteDetail.this, "Note successfully saved",Toast.LENGTH_LONG).show();
+                    openMainPage();
+                }
+                else {
+                    Toast.makeText(NoteDetail.this, "ERROR: Note has not been saved",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -124,5 +127,10 @@ public class NoteDetail extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openMainPage() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
