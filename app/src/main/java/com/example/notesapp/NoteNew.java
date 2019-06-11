@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
@@ -53,6 +56,31 @@ public class NoteNew extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate(R.menu.menu_new, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item ) {
+        switch (item.getItemId()) {
+            case R.id.action_detail_favourite:
+                if (item.isChecked()) {
+                    item.setIcon(R.drawable.ic_star_border_white_24dp);
+                    item.setTitle("Add as Favourite");
+                    item.setChecked(false);
+                }
+                else {
+                    item.setIcon(R.drawable.ic_star_white_24dp);
+                    item.setTitle("Remove from Favourites");
+                    item.setChecked(true);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public Date getCurrentDate() {

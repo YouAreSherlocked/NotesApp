@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-
+    private static Boolean showFavourites = false;
     private ArrayList<Note> mNotes = new ArrayList<>();
     RecyclerView.Adapter mAdapter;
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         notesDb = new DatabaseHelper(this);
-        loadNotes();
+        loadNotes(showFavourites);
         notesDb.close();
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
         touchHelper.attachToRecyclerView(rView);
     }
 
-    private void loadNotes() {
+    private void loadNotes(Boolean justFavourites) {
 
-        Cursor result = notesDb.getAllData();
+        Cursor result = justFavourites ? notesDb.getAllFavourites() : notesDb.getAllData();
         if (result.getCount() == 0) {
             showMessage("ERROR", "No Data Found");
             return;
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
-
 
     public void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -126,12 +125,15 @@ public class MainActivity extends AppCompatActivity {
                     item.setIcon(R.drawable.ic_star_border_white_24dp);
                     item.setChecked(false);
                     item.setTitle("Show Favourites");
+                    showFavourites = false;
                 }
                 else {
                     item.setIcon(R.drawable.ic_star_white_24dp);
                     item.setChecked(true);
                     item.setTitle("Show all");
+                    showFavourites = true;
                 }
+                loadNotes(showFavourites);
                 return true;
             case R.id.action_home_search:
                 Log.v(TAG, "Search clicked");

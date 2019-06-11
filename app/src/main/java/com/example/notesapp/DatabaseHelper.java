@@ -94,4 +94,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Cursor getAllFavourites() {
+        db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("select * from " + NOTES_TABLE_NAME + " where " + N_COL_5 + " = ?" , new String[] { "true" });
+        return result;
+    }
+
 }

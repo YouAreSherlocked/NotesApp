@@ -12,8 +12,8 @@
 
     <TextView
         android:id="@+id/noteTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="336dp"
+        android:layout_height="31dp"
         android:layout_marginTop="8dp"
         android:text="Note Title"
         android:textSize="24dp"
@@ -22,8 +22,8 @@
 
     <TextView
         android:id="@+id/noteText"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_width="336dp"
+        android:layout_height="53dp"
         android:layout_marginTop="12dp"
         android:text="Note Content"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,4 +39,14 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/ic_star_border_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/noteStar"/>
 </android.support.constraint.ConstraintLayout>

@@ -2,11 +2,13 @@ package com.example.notesapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.notesapp.model.Note;
@@ -36,6 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.id.setText(mNotes.get(position).getId());
         holder.text.setText(mNotes.get(position).getContent());
         holder.title.setText(mNotes.get(position).getTitle());
+        holder.star.setImageDrawable(mContext.getDrawable(mNotes.get(position).getFavourite() ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp));
         holder.notesListR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView id;
         TextView title;
         TextView text;
+        ImageView star;
         ConstraintLayout notesListR;
 
         public ViewHolder(View itemView) {
@@ -67,6 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             id = itemView.findViewById(R.id.noteId);
             title = itemView.findViewById(R.id.noteTitle);
             text = itemView.findViewById(R.id.noteText);
+            star = itemView.findViewById(R.id.noteStar);
             notesListR = itemView.findViewById(R.id.notesList);
         }
     }

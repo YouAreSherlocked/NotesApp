@@ -4,11 +4,13 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +30,7 @@ public class NoteDetail extends AppCompatActivity {
 
     DatabaseHelper notesDb;
     EditText noteTitle, noteContent;
+    MenuItem noteFav;
     Button btnUpdateNote;
     private static String id;
 
@@ -73,6 +76,7 @@ public class NoteDetail extends AppCompatActivity {
 
         noteTitle = (EditText)findViewById(R.id.noteDetailTitle);
         noteContent = (EditText)findViewById(R.id.noteDetailText);
+        noteFav = (MenuItem)findViewById(R.id.action_detail_favourite);
         btnUpdateNote = (Button)findViewById(R.id.update_button);
         updateNoteData();
     }
