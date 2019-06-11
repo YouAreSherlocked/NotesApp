@@ -94,6 +94,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Integer deleteNoteById(Integer id) {
+        db = this.getWritableDatabase();
+        return db.delete(NOTES_TABLE_NAME, "ID = ?", new String[] { id.toString() });
+    }
     public Cursor getAllFavourites() {
         db = this.getWritableDatabase();
         Cursor result = db.rawQuery("select * from " + NOTES_TABLE_NAME + " where " + N_COL_5 + " = ?" , new String[] { "true" });
