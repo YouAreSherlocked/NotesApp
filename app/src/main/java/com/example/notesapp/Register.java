@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,12 +17,16 @@ public class Register extends AppCompatActivity {
     DatabaseHelper notesDb;
     EditText editUsername, editPassword;
     Button btnAddData;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setTitle("Register");
+
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("USERID", 0);
 
         TextView registerText = findViewById(R.id.go_to_login);
         registerText.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +35,7 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
         notesDb.close();
 
         editUsername = (EditText)findViewById(R.id.register_username);
@@ -38,8 +43,14 @@ public class Register extends AppCompatActivity {
         btnAddData = (Button)findViewById(R.id.register_submit_button);
         addUser();
     }
+
     public void openLoginPage() {
         Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
+
+    public void openMainPage() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -73,8 +84,13 @@ public class Register extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
-                        redirect();
+                        if (editUsername.getText().toString() == "" || editPassword.getText().toString() == "") {
+                            Toast.makeText(Register.this, "Please fill out all fields", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
+                            openMainPage();
+                        }
                     }
                 }
         );

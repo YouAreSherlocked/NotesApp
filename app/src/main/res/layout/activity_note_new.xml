@@ -26,53 +26,55 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="646dp"
-        android:paddingTop="55dp">
+        android:layout_height="match_parent"
+        android:paddingTop="58dp">
 
         <EditText
             android:id="@+id/noteNewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_width="366dp"
+            android:layout_height="62dp"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
             android:text="Title"
             android:textSize="26dp"
             app:layout_anchorGravity="bottom|center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/noteNewText"
-            android:layout_width="412dp"
+            android:layout_width="366dp"
             android:layout_height="511dp"
             android:layout_marginEnd="8dp"
+            android:background="@null"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             app:layout_anchorGravity="bottom|center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.594"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/noteNewTitle" />
 
-    </android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/btnAddNewNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Save"
+            app:layout_anchorGravity="bottom|center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btnAddNewNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_anchor="@+id/include3"
-        app:layout_anchorGravity="bottom|center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.design.widget.CoordinatorLayout>

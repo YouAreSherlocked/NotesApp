@@ -20,10 +20,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<Note> mNotes;
     private Context mContext;
+    private int userId;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Note> mNotes) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<Note> mNotes, int userId) {
         this.mNotes = mNotes;
         this.mContext = mContext;
+        this.userId = userId;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("TITLE", mNotes.get(position).getTitle());
                 intent.putExtra("TEXT", mNotes.get(position).getContent());
                 intent.putExtra("FAV", mNotes.get(position).getFavourite());
+                intent.putExtra("USERID", userId);
                 v.getContext().startActivity(intent);
             }
         });

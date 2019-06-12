@@ -1,7 +1,9 @@
 package com.example.notesapp;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Icon;
@@ -34,6 +36,7 @@ public class NoteDetail extends AppCompatActivity {
     private static String id;
     private static boolean isFav;
     private Menu menu;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,16 @@ public class NoteDetail extends AppCompatActivity {
         isFav = getIntent().getExtras().getBoolean("FAV");
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
+        userId = intent.getIntExtra("USERID", 0);
+
+        Log.v("DET", Integer.toString(userId));
+        SharedPreferences sharedpreferences = getSharedPreferences("SHARED_USERID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("USERID", userId);
+        editor.commit();
+
+        int sharedUserId = sharedpreferences.getInt("USERID", 0);
+        Log.v("DET", Integer.toString(sharedUserId));
 
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -74,7 +87,7 @@ public class NoteDetail extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
 
         noteTitle = (EditText)findViewById(R.id.noteDetailTitle);
         noteContent = (EditText)findViewById(R.id.noteDetailText);
@@ -89,9 +102,12 @@ public class NoteDetail extends AppCompatActivity {
             public void onClick(View v) {
                 boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString(), menu.findItem(R.id.action_detail_favourite).isChecked());
                 if (isUpdated == true) {
-                    Toast.makeText(NoteDetail.this, "Note successfully safed",Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(NoteDetail.this, "ERROR: Note has not been safed",Toast.LENGTH_LONG).show();                }
+                    Toast.makeText(NoteDetail.this, "Note successfully saved",Toast.LENGTH_LONG).show();
+                    openMainPage();
+                }
+                else {
+                    Toast.makeText(NoteDetail.this, "ERROR: Note has not been saved",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -124,5 +140,13 @@ public class NoteDetail extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openMainPage() {
+        Intent intent = new Intent(this, MainActivity.class);
+
+        Log.v("RRR", Integer.toString(userId));
+        intent.putExtra("USERID", userId);
+        startActivity(intent);
     }
 }

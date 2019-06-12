@@ -2,17 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.notesapp.MainActivity">
+
     <item
         android:id="@+id/action_home_favourites"
         android:icon="@drawable/ic_star_border_white_24dp"
         android:title="Show Favourites"
-        android:checked="false"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_home_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:title="Open Search"
         android:checked="false"
         app:showAsAction="always" />
 </menu>
