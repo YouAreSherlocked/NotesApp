@@ -9,4 +9,13 @@
         android:title="Show Favourites"
         android:checked="false"
         app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="Log Out"
+        android:iconTint="#ffffff"
+        app:showAsAction="never" />
+
 </menu>

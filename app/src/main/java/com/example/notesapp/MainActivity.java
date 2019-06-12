@@ -31,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Note> mNotes = new ArrayList<>();
     private int userId;
+
+
+
     RecyclerView.Adapter mAdapter;
-
     DatabaseHelper notesDb;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +49,21 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("USERID", 0);
         Log.v("INTENT", Integer.toString(userId));
+
         SharedPreferences sharedpreferences = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
 
-    if (userId == 0) {
-        int sharedUserId = sharedpreferences.getInt("USERID", 0);
-        Log.v("HOME", Integer.toString(sharedUserId));
-        userId = sharedUserId;
-    }
-    else {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("USERID", userId);
-        Log.v("ELSE", Integer.toString(userId));
+        if (userId == 0) {
+            int sharedUserId = sharedpreferences.getInt("USERID", 0);
+            Log.v("HOME", Integer.toString(sharedUserId));
+            userId = sharedUserId;
+        }
+        else {
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("USERID", userId);
+            Log.v("ELSE", Integer.toString(userId));
 
-        editor.commit();
-    }
+            editor.commit();
+        }
 
         mAdapter = new RecyclerViewAdapter(this, mNotes, userId);
         RecyclerView rView = findViewById(R.id.notesListR);
@@ -77,40 +79,48 @@ public class MainActivity extends AppCompatActivity {
         });
 
         notesDb = new DatabaseHelper(this, userId);
-
         loadNotes(showFavourites);
         notesDb.close();
 
-            ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                    return false;
-                }
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
 
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder target, int i) {
-                    int position = target.getAdapterPosition();
-                    DeleteData(position);
-                    mNotes.remove(position);
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int i) {
+                int position = target.getAdapterPosition();
+                DeleteData(position);
+                mNotes.remove(position);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
-            touchHelper.attachToRecyclerView(rView);
-        }
+        touchHelper.attachToRecyclerView(rView);
+    }
 
-        private void DeleteData(int position) {
-            Integer deletedRows = notesDb.deleteNoteById(parseInt(mNotes.get(position).getId()));
-            if (deletedRows > 0)
-                Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
-            else
-                Toast.makeText(MainActivity.this, "Failed to delete Data", Toast.LENGTH_LONG).show();
-        }
+    public void logOut() {
+        SharedPreferences sharedpreferences = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("USERID", 0);
+        editor.commit();
+        Toast.makeText(MainActivity.this, "Loged Out", Toast.LENGTH_LONG).show();
+        openLoginPage();
+    }
+
+    private void DeleteData(int position) {
+        Integer deletedRows = notesDb.deleteNoteById(parseInt(mNotes.get(position).getId()));
+        if (deletedRows > 0)
+            Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(MainActivity.this, "Failed to delete Data", Toast.LENGTH_LONG).show();
+    }
 
     private void loadNotes(boolean justFavourites) {
         Cursor result = justFavourites ? notesDb.getAllFavourites(userId) : notesDb.getAllNotes(userId);
         if (result.getCount() == 0) {
-            showMessage("ERROR", "No Data Found");
+            showMessage("No Notes", "You have no Notes created yet");
             return;
         }
         StringBuffer buffer = new StringBuffer();
@@ -122,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void openNewNotePage() {
         Intent intent = new Intent(this, NoteNew.class);
-        Log.v("TTT", Integer.toString(userId));
         intent.putExtra("USERID", userId);
         startActivity(intent);
     }
@@ -131,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
-
 
     public void showMessage(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -168,6 +176,9 @@ public class MainActivity extends AppCompatActivity {
                 loadNotes(showFavourites);
                 mAdapter.notifyDataSetChanged();
                 return true;
+
+            case R.id.action_settings:
+                logOut();
         }
         return super.onOptionsItemSelected(item);
     }
