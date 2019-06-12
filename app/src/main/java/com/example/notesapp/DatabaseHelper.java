@@ -98,10 +98,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getAllData() {
+    public Cursor getAllNotes(int userId) {
         db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("select * from "+NOTES_TABLE_NAME, null);
-        return result;
+        return db.rawQuery("select * from " + NOTES_TABLE_NAME +
+                                         " where " + N_COL_1 + " in (select " + UN_COL_2 +
+                                         " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
+                                         " = ?" + ")", new String[] {Integer.toString(userId)});
     }
 
     public Boolean updateNote(Integer id, String title, String content, boolean fav) {
@@ -133,9 +135,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return password;
         }
     }
-    public Cursor getAllFavourites() {
+    public Cursor getAllFavourites(int userId) {
         db = this.getWritableDatabase();
-        return db.rawQuery("select * from " + NOTES_TABLE_NAME + " where " + N_COL_5 + " = ?" , new String[] { "1" });
+        return db.rawQuery("select * from " + NOTES_TABLE_NAME +
+                " where " + N_COL_1 + " in (select " + UN_COL_2 +
+                " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
+                " = ?" + ") and " + N_COL_5 + " = 1", new String[] { Integer.toString(userId) });
     }
 
     public int getUserIdByName(String editUsername) {

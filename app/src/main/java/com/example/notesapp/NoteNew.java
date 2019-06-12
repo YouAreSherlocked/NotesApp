@@ -1,6 +1,8 @@
 package com.example.notesapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +37,11 @@ public class NoteNew extends AppCompatActivity {
 
         Intent intent = getIntent();
         userId = intent.getIntExtra("USERID", 0);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("SHARED_USERID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("USERID", userId);
+        editor.commit();
 
         notesDb = new DatabaseHelper(this, userId);
         notesDb.close();

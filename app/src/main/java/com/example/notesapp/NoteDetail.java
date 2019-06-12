@@ -1,7 +1,9 @@
 package com.example.notesapp;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Icon;
@@ -46,6 +48,15 @@ public class NoteDetail extends AppCompatActivity {
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
         userId = intent.getIntExtra("USERID", 0);
+
+        Log.v("DET", Integer.toString(userId));
+        SharedPreferences sharedpreferences = getSharedPreferences("SHARED_USERID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("USERID", userId);
+        editor.commit();
+
+        int sharedUserId = sharedpreferences.getInt("USERID", 0);
+        Log.v("DET", Integer.toString(sharedUserId));
 
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -133,6 +144,9 @@ public class NoteDetail extends AppCompatActivity {
 
     public void openMainPage() {
         Intent intent = new Intent(this, MainActivity.class);
+
+        Log.v("RRR", Integer.toString(userId));
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 }

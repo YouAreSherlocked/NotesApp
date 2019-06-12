@@ -10,11 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import static com.example.notesapp.Register.md5;
-import static com.example.notesapp.DatabaseHelper.*;
 
 public class Login extends AppCompatActivity {
 

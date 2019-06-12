@@ -1,6 +1,8 @@
 package com.example.notesapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.notesapp.model.Note;
@@ -46,8 +47,23 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userId = intent.getIntExtra("USERID", 0);
+        Log.v("INTENT", Integer.toString(userId));
+        SharedPreferences sharedpreferences = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
 
-        mAdapter = new RecyclerViewAdapter(this, mNotes);
+    if (userId == 0) {
+        int sharedUserId = sharedpreferences.getInt("USERID", 0);
+        Log.v("HOME", Integer.toString(sharedUserId));
+        userId = sharedUserId;
+    }
+    else {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("USERID", userId);
+        Log.v("ELSE", Integer.toString(userId));
+
+        editor.commit();
+    }
+
+        mAdapter = new RecyclerViewAdapter(this, mNotes, userId);
         RecyclerView rView = findViewById(R.id.notesListR);
         rView.setAdapter(mAdapter);
         rView.setLayoutManager(new LinearLayoutManager(this));
@@ -92,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     private void loadNotes(boolean justFavourites) {
-        Cursor result = justFavourites ? notesDb.getAllFavourites() : notesDb.getAllData();
+        Cursor result = justFavourites ? notesDb.getAllFavourites(userId) : notesDb.getAllNotes(userId);
         if (result.getCount() == 0) {
             showMessage("ERROR", "No Data Found");
             return;
@@ -106,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openNewNotePage() {
         Intent intent = new Intent(this, NoteNew.class);
+        Log.v("TTT", Integer.toString(userId));
         intent.putExtra("USERID", userId);
         startActivity(intent);
     }
