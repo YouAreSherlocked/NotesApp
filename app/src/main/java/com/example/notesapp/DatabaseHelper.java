@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import java.sql.Date;
 
@@ -48,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + NOTES_TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,TITLE TEXT, CONTENT TEXT,CREATED_DATE DATE DEFAULT CURRENT_DATE,FAV BOOLEAN)");
     }
 
+    // Drop all tables when they already exists
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS USER_TABLE_NAME");
@@ -56,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Insert new User into user_table
     public boolean registerUser(String username, String password) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -69,6 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Insert new note into note_table
     public boolean insertNote(String title, String content, Date created_date, boolean fav) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -85,6 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Insert user-note connection into user_note_table with user-id and note-id
     public boolean insertUserNote(int userId, long noteId) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -98,14 +101,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Get all Notes from active User
     public Cursor getAllNotes(int userId) {
         db = this.getWritableDatabase();
         return db.rawQuery("select * from " + NOTES_TABLE_NAME +
-                                         " where " + N_COL_1 + " in (select " + UN_COL_2 +
-                                         " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
-                                         " = ?" + ")", new String[] {Integer.toString(userId)});
+                                " where " + N_COL_1 + " in (select " + UN_COL_2 +
+                                " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
+                                " = ?" + ")", new String[] {Integer.toString(userId)});
     }
 
+    // Get all Notes from active User that are marked as Favourite
+    public Cursor getAllFavourites(int userId) {
+        db = this.getWritableDatabase();
+        return db.rawQuery("select * from " + NOTES_TABLE_NAME +
+                                " where " + N_COL_1 + " in (select " + UN_COL_2 +
+                                " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
+                                " = ?" + ") and " + N_COL_5 + " = 1", new String[] { Integer.toString(userId) });
+    }
+
+    // Update Note in note_table with title, content and fav-State
     public Boolean updateNote(Integer id, String title, String content, boolean fav) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -117,11 +131,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    // Delete Note from note-table by Id
     public Integer deleteNoteById(Integer id) {
         db = this.getWritableDatabase();
         return db.delete(NOTES_TABLE_NAME, "ID = ?", new String[] { id.toString() });
     }
 
+    // Get hashed password from User by Username
     public String getUserPassword(String username) {
         db = this.getReadableDatabase();
 
@@ -135,14 +151,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return password;
         }
     }
-    public Cursor getAllFavourites(int userId) {
-        db = this.getWritableDatabase();
-        return db.rawQuery("select * from " + NOTES_TABLE_NAME +
-                " where " + N_COL_1 + " in (select " + UN_COL_2 +
-                " from  " + UN_TABLE_NAME + " where " + UN_COL_1 +
-                " = ?" + ") and " + N_COL_5 + " = 1", new String[] { Integer.toString(userId) });
-    }
 
+    // Get User-Id by Username
     public int getUserIdByName(String editUsername) {
         db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("select id from " + USER_TABLE_NAME + " where " + U_COL_2 + " = ?" , new String[] { editUsername });
