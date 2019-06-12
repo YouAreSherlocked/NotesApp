@@ -168,18 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 loadNotes(showFavourites);
                 mAdapter.notifyDataSetChanged();
                 return true;
-
-            case R.id.action_home_search:
-                Log.v(TAG, "Search clicked");
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    item.setTitle("Close Search");
-                }
-                else {
-                    item.setChecked(true);
-                    item.setTitle("Open Search");
-                }
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
