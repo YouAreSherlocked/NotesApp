@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.example.notesapp.model.Note;
 
 import java.sql.Date;
-
 import static java.lang.Integer.parseInt;
 
+// Class provides methods to communicate with DB
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "notesapp.db";
@@ -38,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
         this.userId = userId;
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -71,15 +73,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert new note into note_table
-    public boolean insertNote(String title, String content, Date created_date, boolean fav) {
+    public boolean insertNote(Note note) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(N_COL_2, title);
-        contentValues.put(N_COL_3, content);
-        contentValues.put(N_COL_4, created_date.toString());
-        contentValues.put(N_COL_5, fav ? 1 : 0);
+        contentValues.put(N_COL_2, note.getTitle());
+        contentValues.put(N_COL_3, note.getContent());
+        contentValues.put(N_COL_5, note.getFavourite() ? 1 : 0);
         long result = db.insert(NOTES_TABLE_NAME, null, contentValues);
-        if (result == -1 || !insertUserNote(userId, result)) { //TO DO Make dynamic
+        if (result == -1 || !insertUserNote(userId, result)) {
             return false;
         }
         else {
@@ -120,14 +121,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Update Note in note_table with title, content and fav-State
-    public Boolean updateNote(Integer id, String title, String content, boolean fav) {
+    public Boolean updateNote(String id, Note note) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(N_COL_1, id);
-        contentValues.put(N_COL_2, title);
-        contentValues.put(N_COL_3, content);
-        contentValues.put(N_COL_5, fav ? 1 : 0);
-        db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id.toString() });
+        Log.v("EEE", note.getTitle());
+        contentValues.put(N_COL_2, note.getTitle());
+        contentValues.put(N_COL_3, note.getContent());
+        contentValues.put(N_COL_5, note.getFavourite() ? 1 : 0);
+        db.update(NOTES_TABLE_NAME, contentValues, "ID = ?",new String[] { id });
         return true;
     }
 
@@ -152,11 +153,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
     // Get User-Id by Username
     public int getUserIdByName(String editUsername) {
         db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("select id from " + USER_TABLE_NAME + " where " + U_COL_2 + " = ?" , new String[] { editUsername });
         cursor.moveToFirst();
-        return parseInt(cursor.getString(0));
+        return cursor.getInt(0);
     }
+
+
 }

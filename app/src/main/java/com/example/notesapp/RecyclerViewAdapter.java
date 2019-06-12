@@ -45,6 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), NoteDetail.class);
+
                 intent.putExtra("ID", mNotes.get(position).getId());
                 intent.putExtra("TITLE", mNotes.get(position).getTitle());
                 intent.putExtra("TEXT", mNotes.get(position).getContent());
@@ -59,7 +60,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return mNotes.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

@@ -3,14 +3,11 @@ package com.example.notesapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import static com.example.notesapp.Register.md5;
 
 public class Login extends AppCompatActivity {
@@ -47,28 +44,35 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+    // Open Register Activity
     public void openRegisterPage() {
         Intent intent = new Intent(this, Register.class);
         intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
+    // Open Main Activity
     public void openMainPage() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
+    // Check if User Password is correct and redirect to Main Activity
     public void loginUser(String editUsername) {
         DatabaseHelper db = new DatabaseHelper(this, userId);
         String hashedPassword = md5(editPassword.getText().toString());
         String password = db.getUserPassword(editUsername);
-        userId = db.getUserIdByName(editUsername);
-
-        if (hashedPassword.equals(password)) {
-            openMainPage();
-        } else {
-            Toast.makeText(Login.this, "Password is incorrect",Toast.LENGTH_LONG).show();
-        }
+        try {
+            userId = db.getUserIdByName(editUsername);
+            if (hashedPassword.equals(password)) {
+                openMainPage();
+            } else {
+                Toast.makeText(Login.this, "Password is incorrect", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(Login.this, "User doesn't exist", Toast.LENGTH_LONG).show();
+            }
     }
 }

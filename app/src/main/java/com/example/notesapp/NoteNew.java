@@ -8,15 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 
-import java.sql.Date;
+import com.example.notesapp.model.Note;
 
+import java.sql.Date;
 
 public class NoteNew extends AppCompatActivity {
 
@@ -25,6 +25,7 @@ public class NoteNew extends AppCompatActivity {
     private EditText noteTitle, noteContent;
     private Button btnAddData;
     private int userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,9 @@ public class NoteNew extends AppCompatActivity {
         noteTitle = (EditText)findViewById(R.id.noteNewTitle);
         noteContent = (EditText)findViewById(R.id.noteNewText);
         btnAddData = (Button)findViewById(R.id.btnAddNewNote);
+
         addNote();
+
         EditText title = findViewById(R.id.noteNewTitle);
         title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,7 +111,8 @@ public class NoteNew extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       notesDb.insertNote(noteTitle.getText().toString(), noteContent.getText().toString(), getCurrentDate(), isFav);
+                        Note note = new Note(noteTitle.getText().toString(), noteContent.getText().toString(), isFav);
+                       notesDb.insertNote(note);
                        openMainActivityPage();
                     }
                 }

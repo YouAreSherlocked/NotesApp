@@ -44,19 +44,23 @@ public class Register extends AppCompatActivity {
         addUser();
     }
 
+    // Open Login Activity
     public void openLoginPage() {
         Intent intent = new Intent(this, Login.class);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
+    //Open Main Activity
     public void openMainPage() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
+    // Creates MD5 Hash
     public static String md5(String s) {
         try {
-            // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest
                     .getInstance("MD5");
             digest.update(s.getBytes());
@@ -72,11 +76,6 @@ public class Register extends AppCompatActivity {
             e.printStackTrace();
         }
         return "";
-    }
-
-    public void redirect() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     public void addUser() {

@@ -9,10 +9,24 @@ public class Note {
     private boolean isFavourite;
     private Date createdAt;
 
+    public Note(String title, String content, Boolean isFavourite) {
+        this.title = title;
+        this.content = content;
+        this.isFavourite = isFavourite;
+    }
+
     public Note(String id, String title, String content, Boolean isFavourite) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.isFavourite = isFavourite;
+    }
+
+    public Note(String id, String title, String content, Date createdAt, Boolean isFavourite) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
         this.isFavourite = isFavourite;
     }
 

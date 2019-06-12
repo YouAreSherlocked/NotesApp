@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesapp.model.Note;
+
 import static java.lang.Integer.parseInt;
 
 public class NoteDetail extends AppCompatActivity {
@@ -49,21 +51,16 @@ public class NoteDetail extends AppCompatActivity {
         String textIn = intent.getStringExtra("TEXT");
         userId = intent.getIntExtra("USERID", 0);
 
-        Log.v("DET", Integer.toString(userId));
         SharedPreferences sharedpreferences = getSharedPreferences("SHARED_USERID", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("USERID", userId);
         editor.commit();
-
-        int sharedUserId = sharedpreferences.getInt("USERID", 0);
-        Log.v("DET", Integer.toString(sharedUserId));
 
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(titleIn);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         EditText content2 = findViewById(R.id.noteDetailText);
         content2.setText(textIn);
@@ -100,7 +97,8 @@ public class NoteDetail extends AppCompatActivity {
         btnUpdateNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isUpdated = notesDb.updateNote( parseInt(id), noteTitle.getText().toString(), noteContent.getText().toString(), menu.findItem(R.id.action_detail_favourite).isChecked());
+                Note note = new Note(noteTitle.getText().toString(), noteContent.getText().toString(), isFav);
+                boolean isUpdated = notesDb.updateNote(id, note);
                 if (isUpdated == true) {
                     Toast.makeText(NoteDetail.this, "Note successfully saved",Toast.LENGTH_LONG).show();
                     openMainPage();
@@ -126,7 +124,6 @@ public class NoteDetail extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item ) {
         switch (item.getItemId()) {
             case R.id.action_detail_favourite:
-                Log.v(TAG, "Star clicked");
                 if (item.isChecked()) {
                     item.setIcon(R.drawable.ic_star_border_white_24dp);
                     item.setTitle("Add as Favourite");
@@ -145,7 +142,6 @@ public class NoteDetail extends AppCompatActivity {
     public void openMainPage() {
         Intent intent = new Intent(this, MainActivity.class);
 
-        Log.v("RRR", Integer.toString(userId));
         intent.putExtra("USERID", userId);
         startActivity(intent);
     }
