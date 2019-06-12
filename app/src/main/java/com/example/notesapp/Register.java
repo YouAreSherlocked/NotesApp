@@ -63,12 +63,18 @@ public class Register extends AppCompatActivity {
         return "";
     }
 
+    public void redirect() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     public void addUser() {
         btnAddData.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         notesDb.registerUser(editUsername.getText().toString(), md5(editPassword.getText().toString()));
+                        redirect();
                     }
                 }
         );
