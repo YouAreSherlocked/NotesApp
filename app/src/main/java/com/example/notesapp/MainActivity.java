@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static boolean showFavourites = false;
 
     private ArrayList<Note> mNotes = new ArrayList<>();
+    private int userId;
     RecyclerView.Adapter mAdapter;
 
     DatabaseHelper notesDb;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("NotesApp");
 
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("USERID", 0);
+
         mAdapter = new RecyclerViewAdapter(this, mNotes);
         RecyclerView rView = findViewById(R.id.notesListR);
         rView.setAdapter(mAdapter);
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
 
         loadNotes(showFavourites);
         notesDb.close();
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openNewNotePage() {
         Intent intent = new Intent(this, NoteNew.class);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 

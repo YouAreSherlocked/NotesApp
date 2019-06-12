@@ -17,12 +17,16 @@ public class Register extends AppCompatActivity {
     DatabaseHelper notesDb;
     EditText editUsername, editPassword;
     Button btnAddData;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setTitle("Register");
+
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("USERID", 0);
 
         TextView registerText = findViewById(R.id.go_to_login);
         registerText.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +35,7 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
         notesDb.close();
 
         editUsername = (EditText)findViewById(R.id.register_username);

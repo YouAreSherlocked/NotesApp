@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import java.sql.Date;
 
+import static java.lang.Integer.parseInt;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "notesapp.db";
@@ -29,10 +31,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String N_COL_4 = "CREATED_DATE";
     public static final String N_COL_5 = "FAV";
 
+    private int userId;
+
     SQLiteDatabase db;
 
-    public DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context, int userId) {
         super(context, DATABASE_NAME, null, 1);
+        this.userId = userId;
     }
 
 
@@ -72,6 +77,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(N_COL_4, created_date.toString());
         contentValues.put(N_COL_5, fav ? 1 : 0);
         long result = db.insert(NOTES_TABLE_NAME, null, contentValues);
+        if (result == -1 || !insertUserNote(userId, result)) { //TO DO Make dynamic
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean insertUserNote(int userId, long noteId) {
+        db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(UN_COL_1, userId);
+        contentValues.put(UN_COL_2, noteId);
+        long result = db.insert(UN_TABLE_NAME, null, contentValues);
         if (result == -1) {
             return false;
         } else {
@@ -119,4 +138,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + NOTES_TABLE_NAME + " where " + N_COL_5 + " = ?" , new String[] { "1" });
     }
 
+    public int getUserIdByName(String editUsername) {
+        db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select id from " + USER_TABLE_NAME + " where " + U_COL_2 + " = ?" , new String[] { editUsername });
+        cursor.moveToFirst();
+        return parseInt(cursor.getString(0));
+    }
 }

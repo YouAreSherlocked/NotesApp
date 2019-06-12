@@ -3,6 +3,7 @@ package com.example.notesapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ public class Login extends AppCompatActivity {
     DatabaseHelper notesDb;
     EditText editUsername, editPassword;
     Button btnLoginUser;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
         notesDb.close();
 
         editUsername = (EditText)findViewById(R.id.login_username);
@@ -50,21 +52,24 @@ public class Login extends AppCompatActivity {
     }
     public void openRegisterPage() {
         Intent intent = new Intent(this, Register.class);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
-    public void openNotesPage() {
+    public void openMainPage() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 
     public void loginUser(String editUsername) {
-        DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseHelper db = new DatabaseHelper(this, userId);
         String hashedPassword = md5(editPassword.getText().toString());
         String password = db.getUserPassword(editUsername);
+        userId = db.getUserIdByName(editUsername);
 
         if (hashedPassword.equals(password)) {
-            openNotesPage();
+            openMainPage();
         } else {
             Toast.makeText(Login.this, "Password is incorrect",Toast.LENGTH_LONG).show();
         }

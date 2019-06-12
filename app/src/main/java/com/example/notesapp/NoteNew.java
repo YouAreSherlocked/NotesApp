@@ -19,9 +19,10 @@ import java.sql.Date;
 public class NoteNew extends AppCompatActivity {
 
     boolean isFav;
-    DatabaseHelper notesDb;
-    EditText noteTitle, noteContent;
-    Button btnAddData;
+    private DatabaseHelper notesDb;
+    private EditText noteTitle, noteContent;
+    private Button btnAddData;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,10 @@ public class NoteNew extends AppCompatActivity {
         setTitle("New Note");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        notesDb = new DatabaseHelper(this);
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("USERID", 0);
+
+        notesDb = new DatabaseHelper(this, userId);
         notesDb.close();
 
         noteTitle = (EditText)findViewById(R.id.noteNewTitle);

@@ -34,6 +34,7 @@ public class NoteDetail extends AppCompatActivity {
     private static String id;
     private static boolean isFav;
     private Menu menu;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class NoteDetail extends AppCompatActivity {
         isFav = getIntent().getExtras().getBoolean("FAV");
         String titleIn = intent.getStringExtra("TITLE");
         String textIn = intent.getStringExtra("TEXT");
+        userId = intent.getIntExtra("USERID", 0);
 
         setContentView(R.layout.activity_note_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -74,7 +76,7 @@ public class NoteDetail extends AppCompatActivity {
             }
         });
 
-        notesDb = new DatabaseHelper(this);
+        notesDb = new DatabaseHelper(this, userId);
 
         noteTitle = (EditText)findViewById(R.id.noteDetailTitle);
         noteContent = (EditText)findViewById(R.id.noteDetailText);
