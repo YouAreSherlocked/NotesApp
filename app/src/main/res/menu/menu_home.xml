@@ -17,5 +17,4 @@
         android:title="Log Out"
         android:iconTint="#ffffff"
         app:showAsAction="never" />
-
 </menu>
