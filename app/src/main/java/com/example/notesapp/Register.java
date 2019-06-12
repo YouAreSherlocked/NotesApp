@@ -74,6 +74,11 @@ public class Register extends AppCompatActivity {
         return "";
     }
 
+    public void redirect() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     public void addUser() {
         btnAddData.setOnClickListener(
                 new View.OnClickListener() {
